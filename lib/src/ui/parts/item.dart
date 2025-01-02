@@ -421,12 +421,12 @@ class ItemWidgetState extends State<ItemWidget>
       required bool showMonthNames,
       required String monthFormatString,
       required String? monthFormatLocale}) {
-    print('''
-In item
-optionsShowNames: ${showMonthNames}
-optionsFString: ${monthFormatString}
-optionsLocale: ${monthFormatLocale}
-''');
+//     print('''
+// In item
+// optionsShowNames: ${showMonthNames}
+// optionsFString: ${monthFormatString}
+// optionsLocale: ${monthFormatLocale}
+// ''');
     TextStyle? textStyle = Theme.of(context).textTheme.bodyLarge;
     if (selectedIndex == i) {
       textStyle = textStyle?.copyWith(
