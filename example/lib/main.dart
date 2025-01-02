@@ -17,6 +17,16 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromARGB(255, 235, 235, 241),
         useMaterial3: false,
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        // useMaterial3: false,
+        colorScheme: ColorScheme.dark(
+          surface: Colors.blueGrey,
+        ),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 41, 41, 41),
+      ),
+      themeMode: ThemeMode.light,
+
       // home: const Home(),
       home: const MySampleApp(),
     );
@@ -43,7 +53,7 @@ class _MySampleAppState extends State<MySampleApp> {
         appBar: AppBar(
           title: const Text('Board DateTime Picker Example'),
         ),
-        backgroundColor: const Color.fromARGB(255, 245, 245, 250),
+        // backgroundColor: const Color.fromARGB(255, 245, 245, 250),
         body: SingleChildScrollView(
           controller: scrollController,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
@@ -214,18 +224,22 @@ class PickerItemWidget extends StatelessWidget {
             // initialDate: DateTime.now(),
             // minimumDate: DateTime.now().add(const Duration(days: 1)),
             options: BoardDateTimeOptions(
-              languages: const BoardPickerLanguages.en(),
-              startDayOfWeek: DateTime.sunday,
-              pickerFormat: PickerFormat.ymd,
-              // boardTitle: 'Board Picker',
-              // pickerSubTitles: BoardDateTimeItemTitles(year: 'year'),
-              withSecond: DateTimePickerType.time == pickerType,
-              customOptions: DateTimePickerType.time == pickerType
-                  ? BoardPickerCustomOptions(
-                      seconds: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
-                    )
-                  : null,
-            ),
+                languages: const BoardPickerLanguages.en(),
+                startDayOfWeek: DateTime.sunday,
+                pickerFormat: PickerFormat.ymd,
+                // boardTitle: 'Board Picker',
+                // pickerSubTitles: BoardDateTimeItemTitles(year: 'year'),
+                withSecond: DateTimePickerType.time == pickerType,
+                customOptions:
+                    // DateTimePickerType.time == pickerType
+                    // ?
+                    BoardPickerCustomOptions(
+                  showMonthNames: true, //Todo test bed
+                  monthNameFormatString: 'MMMM',
+                  seconds: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
+                )
+                // : null,
+                ),
             // Specify if you want changes in the picker to take effect immediately.
             valueNotifier: date,
             controller: controller,
@@ -337,10 +351,14 @@ class PickerMultiSelectionItemWidget extends StatelessWidget {
             // minimumDate: DateTime.now().add(const Duration(days: 1)),
             startDate: start.value,
             endDate: end.value,
-            options: const BoardDateTimeOptions(
-              languages: BoardPickerLanguages.en(),
+            options: BoardDateTimeOptions(
+              languages: const BoardPickerLanguages.en(),
               startDayOfWeek: DateTime.sunday,
               pickerFormat: PickerFormat.ymd,
+              customOptions: BoardPickerCustomOptions(
+                  showMonthNames: true,
+                  monthNameFormatString: 'MMM',
+                  monthNameFormatLocale: 'fr'),
               // topMargin: 0,
             ),
             // headerWidget: Container(
@@ -476,8 +494,11 @@ class PickerBuilderItemWidget extends StatelessWidget {
               ValueListenableBuilder(
                 valueListenable: date,
                 builder: (context, data, _) {
+                  String format = 'dd MMMM yyyy';
+                  //  final DateFormat formatter = DateFormat();
                   return Text(
-                    BoardDateFormat(pickerType.format).format(data),
+                    // BoardDateFormat(pickerType.format).format(data),
+                    BoardDateFormat(format).format(data),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -529,9 +550,8 @@ class InputFieldWidget extends StatelessWidget {
               },
               onResult: (p0) {},
               decoration: InputDecoration(
-                fillColor: Theme.of(context)
-                    .scaffoldBackgroundColor
-                    .withValues(alpha: 0.6),
+                fillColor:
+                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.6),
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),

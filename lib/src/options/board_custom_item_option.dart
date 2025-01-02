@@ -19,6 +19,9 @@ class BoardPickerCustomItemOption extends BoardPickerItemOption {
     required super.maximumDate,
     required super.subTitle,
     required super.withSecond,
+    required super.formatString,
+    required super.formatLocale,
+    super.useMonthName = false,
   });
 
   final List<int> customList;
@@ -31,6 +34,9 @@ class BoardPickerCustomItemOption extends BoardPickerItemOption {
     DateTime? maximum,
     String? subTitle, {
     bool withSecond = false,
+    required bool useMonthNames,
+    String? monthFormatString,
+    String? monthFormatLocale,
   }) {
     Map<int, int> map = {};
     int selected;
@@ -93,6 +99,9 @@ class BoardPickerCustomItemOption extends BoardPickerItemOption {
       customList: customList,
       subTitle: subTitle,
       withSecond: withSecond,
+      useMonthName: useMonthNames,
+      formatString: monthFormatString ?? 'M', //Todo done w/ update
+      formatLocale: monthFormatLocale ?? 'en', //Todo done w/ update
     );
   }
 

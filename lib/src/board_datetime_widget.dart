@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'board_datetime_builder.dart';
@@ -273,6 +275,7 @@ Future<DateTime?> showBoardDateTimePicker<T extends BoardDateTimeCommonResult>({
     enableDrag: enableDrag,
     showDragHandle: showDragHandle,
     useSafeArea: useSafeArea,
+    constraints: const BoxConstraints(),
     backgroundColor:
         opt.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
     shape: RoundedRectangleBorder(
@@ -429,6 +432,7 @@ Future<BoardDateTimeMultiSelection?>
     context: context,
     isScrollControlled: true,
     barrierColor: barrierColor,
+    constraints: const BoxConstraints(),
     routeSettings: routeSettings,
     transitionAnimationController: transitionAnimationController,
     useRootNavigator: useRootNavigator,

@@ -94,7 +94,7 @@ class _InoutValue {
     if (date != null) {
       return DateFormat(format).format(date!);
     } else if (text != null) {
-      return text!;
+      return text!; //Todo find out what this method does
     }
     return '';
   }

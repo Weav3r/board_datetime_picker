@@ -16,7 +16,10 @@ BoardPickerItemOption initItemOption(
   List<int>? customList,
   String? subTitle,
   bool withSecond,
-) {
+  bool useMonthNames, [
+  String? monthFormatString,
+  String? monthFormatLocale,
+]) {
   if (customList != null && customList.isNotEmpty) {
     return BoardPickerCustomItemOption.init(
       type,
@@ -26,6 +29,9 @@ BoardPickerItemOption initItemOption(
       maximum,
       subTitle,
       withSecond: withSecond,
+      useMonthNames: useMonthNames,
+      monthFormatString: monthFormatString,
+      monthFormatLocale: monthFormatLocale,
     );
   } else {
     return BoardPickerItemOption.init(
@@ -35,6 +41,9 @@ BoardPickerItemOption initItemOption(
       maximum,
       subTitle,
       withSecond: withSecond,
+      useMonthNames: useMonthNames,
+      monthFormatString: monthFormatString ?? 'M',
+      monthFormatLocale: monthFormatLocale,
     );
   }
 }
@@ -49,6 +58,10 @@ class BoardPickerItemOption {
     required this.maximumDate,
     required this.subTitle,
     required this.withSecond,
+    required this.useMonthName,
+    required this.formatString,
+    this.formatLocale,
+    this.isMonth = false,
   });
 
   /// [DateType] year, month, day, hour, minute
@@ -59,6 +72,12 @@ class BoardPickerItemOption {
 
   /// Picker item map.
   Map<int, int> map;
+
+  ///Mine
+  final bool isMonth;
+  final bool useMonthName;
+  final String formatString;
+  final String? formatLocale;
 
   /// Selected item for list.
   int selectedIndex;
@@ -87,9 +106,13 @@ class BoardPickerItemOption {
     DateTime? maximum,
     String? subTitle, {
     bool withSecond = false,
+    required bool useMonthNames,
+    String monthFormatString = 'M',
+    String? monthFormatLocale,
   }) {
     Map<int, int> map = {};
     int selected;
+    bool isMonth = false;
 
     // Define specified minimum and maximum dates
     final mi = minimum ?? DateTimeUtil.defaultMinDate;
@@ -101,6 +124,7 @@ class BoardPickerItemOption {
       case DateType.month:
         map = minmaxList(DateType.month, date, mi, ma);
         selected = indexFromValue(date.month, map);
+        isMonth = true;
 
         break;
       case DateType.day:
@@ -130,6 +154,11 @@ class BoardPickerItemOption {
       maximumDate: ma,
       subTitle: subTitle,
       withSecond: withSecond,
+      isMonth: isMonth,
+      useMonthName: useMonthNames, //Todo update
+      formatString:
+          monthFormatString, //Todo  set to null bcos default show numbers
+      formatLocale: monthFormatLocale, //Todo set to null bcos ...
     );
   }
 
@@ -156,6 +185,9 @@ class BoardPickerItemOption {
       maximumDate: ma,
       subTitle: subTitle,
       withSecond: false,
+      useMonthName: false, //Todo update
+      formatString: 'M', //Todo update
+      formatLocale: 'en', //Todo update
     );
   }
 
@@ -316,6 +348,7 @@ class BoardPickerItemOption {
       case DateType.month:
         int minMonth = 1;
         int maxMonth = 12;
+        //charley
         if (date.isMinimum(minimum, DateType.year)) {
           minMonth = minimum.month;
         }

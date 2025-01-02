@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:board_datetime_picker/src/options/board_item_option.dart';
+import 'package:board_datetime_picker/src/utils/month_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -83,7 +84,7 @@ class ItemWidgetState extends State<ItemWidget>
     );
     correctColor = ColorTween(
       begin: widget.foregroundColor,
-      end: Colors.redAccent.withValues(alpha: 0.8),
+      end: Colors.redAccent.withOpacity(0.8),
     ).animate(correctAnimationController);
 
     correctAnimationController.addStatusListener((status) {
@@ -186,7 +187,7 @@ class ItemWidgetState extends State<ItemWidget>
               child: Text(
                 widget.subTitle!,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: widget.textColor?.withValues(alpha: 0.5),
+                      color: widget.textColor?.withOpacity(0.5),
                       fontWeight: FontWeight.bold,
                     ),
               ),
@@ -230,7 +231,17 @@ class ItemWidgetState extends State<ItemWidget>
                               onSelectedItemChanged: onChange,
                               childDelegate: ListWheelChildListDelegate(
                                 children: [
-                                  for (final i in map.keys) _item(i),
+                                  for (final i in map.keys)
+                                    _item(
+                                      i,
+                                      isMonth: widget.option.isMonth,
+                                      showMonthNames:
+                                          widget.option.useMonthName,
+                                      monthFormatString:
+                                          widget.option.formatString,
+                                      monthFormatLocale:
+                                          widget.option.formatLocale,
+                                    ),
                                 ],
                               ),
                             ),
@@ -405,19 +416,38 @@ class ItemWidgetState extends State<ItemWidget>
     );
   }
 
-  Widget _item(int i) {
+  Widget _item(int i,
+      {required bool isMonth,
+      required bool showMonthNames,
+      required String monthFormatString,
+      required String? monthFormatLocale}) {
+    print('''
+In item
+optionsShowNames: ${showMonthNames}
+optionsFString: ${monthFormatString}
+optionsLocale: ${monthFormatLocale}
+''');
     TextStyle? textStyle = Theme.of(context).textTheme.bodyLarge;
     if (selectedIndex == i) {
       textStyle = textStyle?.copyWith(
         fontWeight: FontWeight.bold,
         fontSize: 17,
-        color: widget.textColor?.withValues(alpha: isTextEditing ? 0.0 : 1.0),
+        color: widget.textColor?.withOpacity(isTextEditing ? 0.0 : 1.0),
       );
     } else {
       textStyle = textStyle?.copyWith(
         fontWeight: FontWeight.bold,
         fontSize: 14,
-        color: widget.textColor?.withValues(alpha: 0.4),
+        color: widget.textColor?.withOpacity(0.4),
+      );
+    }
+
+    if (showMonthNames && isMonth) {
+      return Center(
+        child: Text(
+          map[i]!.shortMonthName(monthFormatString, monthFormatLocale),
+          style: textStyle,
+        ),
       );
     }
 

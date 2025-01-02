@@ -268,6 +268,18 @@ class BoardPickerCustomOptions {
   /// List to be displayed in the picker of the second.
   final List<int> seconds;
 
+  /// Todo Set the margins above the top menu bar (calendar button, etc.).
+  /// Todo Default is `20`
+  final bool showMonthNames;
+
+  /// Todo Set the margins above the top menu bar (calendar button, etc.).
+  /// Todo Default is `20`
+  final String? monthNameFormatLocale;
+
+  /// Todo Set the margins above the top menu bar (calendar button, etc.).
+  /// Todo Default is `20`
+  final String? monthNameFormatString;
+
   BoardPickerCustomOptions({
     // this.years = const [],
     // this.months = const [],
@@ -275,6 +287,9 @@ class BoardPickerCustomOptions {
     this.hours = const [],
     this.minutes = const [],
     this.seconds = const [],
+    this.showMonthNames = false,
+    this.monthNameFormatLocale,
+    this.monthNameFormatString,
   });
 
   /// Picker display every 15 minutes
